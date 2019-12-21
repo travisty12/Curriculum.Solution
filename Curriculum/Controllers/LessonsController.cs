@@ -65,6 +65,35 @@ namespace Curriculum.Controllers
       return RedirectToAction("Index");
     }
 
+    public ActionResult AddTrack(int id)
+    {
+      Lesson thisLesson = _db.Lessons.FirstOrDefault(lesson => lesson.LessonId == id);
+      ViewBag.TrackId = new SelectList(_db.Tracks, "TrackId", "Name");
+      return View(thisLesson);
+    }
+
+    [Authorize]
+    [HttpPost]
+    public ActionResult AddTrack(Lesson lesson, int TrackId)
+    {
+      if (TrackId != 0)
+      {
+        _db.TrackLesson.Add(new TrackLesson { TrackId = TrackId, LessonId = lesson.LessonId });
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [Authorize]
+    [HttpPost]
+    public ActionResult DeleteTrack(int joinId)
+    {
+      TrackLesson joinEntry = _db.TrackLesson.FirstOrDefault(entry => entry.TrackLessonId == joinId);
+      _db.TrackLesson.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
     public ActionResult Delete(int id)
     {
       Lesson thisLesson = _db.Lessons.FirstOrDefault(lesson => lesson.LessonId == id);
