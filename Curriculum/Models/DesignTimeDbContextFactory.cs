@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configurations;
+using Microsoft.Extensions.Configuration;
 using System.IO;
 
 namespace Curriculum.Models

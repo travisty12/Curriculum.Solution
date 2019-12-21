@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ToDoList.Models
+namespace Curriculum.Models
 {
   public class ApplicationUser : IdentityUser 
   {
