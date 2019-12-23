@@ -6,24 +6,26 @@
 
 <h2>Lesson Details</h2>
 <hr />
-<h3>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)</h3>
-<h3>@Html.DisplayNameFor(model => model.Content): @Html.DisplayFor(model => model.Content)</h3>
+<h3>@Model.Title</h3>
+<h3>@Model.Content</h3>
 
-@if (Model.Tracks.Count == 0)
-{
-  <h4>There are no tracks belonging to this lesson</h4>
-}
-else
-{
-  <h4>Tracks for this lesson:</h4>
-  <ul>
-    @foreach(var join in Model.Tracks)
-    {
-      <li>@join.Track.Name</li>
-    }
-  </ul>
-}
-
+<div id="content">
+  @if (Model.Tracks.Count == 0)
+  {
+    <h4>There are no tracks belonging to this lesson</h4>
+  }
+  else
+  {
+    <h4>Tracks for this lesson:</h4>
+    <ul>
+      @foreach(var join in Model.Tracks)
+      {
+        <li>@Html.ActionLink(@join.Track.Name, "Details", "Tracks", new { id = @join.Track.TrackId })</li>
+      }
+    </ul>
+  }
+</div>
+<p>@Html.ActionLink("Add a track", "AddTrack", new { id = Model.LessonId })</p>
 <p>@Html.ActionLink("Edit Lesson", "Edit", new { id = Model.LessonId })</p>
 <p>@Html.ActionLink("Delete Lesson", "Delete", new { id = Model.LessonId })</p>
 <p>@Html.ActionLink("Back to list", "Index")</p>

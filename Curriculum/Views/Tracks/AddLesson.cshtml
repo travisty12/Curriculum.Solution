@@ -4,16 +4,16 @@
 
 @model Curriculum.Models.Track
 
-<h2>Edit</h2>
+<h2>Add a lesson</h2>
 
-<h4>Edit this track: @Html.DisplayFor(model => model.Name)</h4>
+<h4>Add a lesson to this track: @Html.DisplayFor(model => model.Name)</h4>
 
 @using (Html.BeginForm())
 {
   @Html.HiddenFor(model => model.TrackId)
 
-  @Html.LabelFor(model => model.Name)
-  @Html.EditorFor(model => model.Name)
+  @Html.Label("Select lesson")
+  @Html.DropDownList("LessonId")
 
   <input type="submit" value="Save" />
 }

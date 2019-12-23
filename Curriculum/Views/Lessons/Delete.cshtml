@@ -11,4 +11,5 @@
 {
   <input type="submit" value="Delete" />
 }
-@Html.ActionLink("Back to List", "Index")
+<p>@Html.ActionLink("Return to details", "Details", new { id = Model.LessonId })</p>
+<p>@Html.ActionLink("Back to List", "Index")</p>

@@ -3,14 +3,16 @@ using System;
 using Curriculum.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Curriculum.Migrations
 {
     [DbContext(typeof(CurriculumContext))]
-    partial class CurriculumContextModelSnapshot : ModelSnapshot
+    [Migration("20191223071835_Curriculum")]
+    partial class Curriculum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -69,7 +69,7 @@ namespace Curriculum.Controllers
     public ActionResult AddLesson(int id)
     {
       Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
-      ViewBag.LessonId = new SelectList(_db.Lessons, "LessonId", "Name");
+      ViewBag.LessonId = new SelectList(_db.Lessons, "LessonId", "Title");
       return View(thisTrack);
     }
 

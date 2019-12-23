@@ -46,7 +46,7 @@ namespace Curriculum.Controllers
     {
       Lesson thisLesson = _db.Lessons
         .Include(lesson => lesson.Tracks)
-        .ThenInclude(join => join.Lesson)
+        .ThenInclude(join => join.Track)
         .FirstOrDefault(lesson => lesson.LessonId == id);
       return View(thisLesson);
     }
