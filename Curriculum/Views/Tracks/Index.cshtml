@@ -14,7 +14,7 @@ else {
   <ul>
     @foreach (Track track in Model)
     {
-      <li>@Html.ActionLink($"{track.Title}", "Details", new { id = track.LessonId })</li>
+      <li>@Html.ActionLink($"{track.Name}", "Details", new { id = track.TrackId })</li>
     }
   </ul>
 }
