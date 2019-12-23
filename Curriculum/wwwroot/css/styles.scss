@@ -1,0 +1,26 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+#header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 7.5vh;
+  background-color: rgba(25,25,25,0.5);
+  #left {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 33%;
+  }
+  #right {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 33%;
+  }
+}
