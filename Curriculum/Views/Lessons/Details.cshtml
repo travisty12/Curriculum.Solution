@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Curriculum.Models.Lesson
+
+<h2>Lesson Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)</h3>
+<h3>@Html.DisplayNameFor(model => model.Content): @Html.DisplayFor(model => model.Content)</h3>
+
+@if (Model.Items.Count == 0)
+{
+  <h4>There are no tracks belonging to this catelessongory</h4>
+}
+else
+{
+  <h4>Tracks for this lesson:</h4>
+  <ul>
+    @foreach(var join in Model.Tracks)
+    {
+      <li>@join.Track.Name</li>
+    }
+  </ul>
+}
+
+<p>@Html.ActionLink("Edit Lesson", "Edit", new { id = Model.LessonId })</p>
+<p>@Html.ActionLink("Delete Lesson", "Delete", new { id = Model.LessonId })</p>
+<p>@Html.ActionLink("Back to list", "Index")</p>
