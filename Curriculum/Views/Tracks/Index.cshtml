@@ -6,18 +6,20 @@
 @model List<Curriculum.Models.Track>;
 <h1>Tracks</h1>
 
-@if (@Model.Count == 0)
-{
-  <h3>No tracks have been added yet.</h3>
-}
-else {
-  <ul>
-    @foreach (Track track in Model)
-    {
-      <li>@Html.ActionLink($"{track.Name}", "Details", new { id = track.TrackId })</li>
-    }
-  </ul>
-}
+<div id="content">
+  @if (@Model.Count == 0)
+  {
+    <h3>No tracks have been added yet.</h3>
+  }
+  else {
+    <ul>
+      @foreach (Track track in Model)
+      {
+        <li>@Html.ActionLink($"{track.Name}", "Details", new { id = track.TrackId })</li>
+      }
+    </ul>
+  }
+</div>
 
 <p>@Html.ActionLink("Add a new track", "Create")</p>
 <p>@Html.ActionLink("Return home", "Index", "Home")</p>
