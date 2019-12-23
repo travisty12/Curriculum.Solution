@@ -4,7 +4,7 @@ namespace Curriculum.Models
   {
     public int LessonTrackId { get; set; }
     public int LessonId { get; set; }
-    public int CategoryId { get; set; }
+    public int TrackId { get; set; }
     public Lesson Lesson { get; set; }
     public Track Track { get; set; }
   }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +68,7 @@ namespace Curriculum.Controllers
 
     public ActionResult AddLesson(int id)
     {
-      Lesson thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
+      Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
       ViewBag.LessonId = new SelectList(_db.Lessons, "LessonId", "Name");
       return View(thisTrack);
     }
@@ -78,7 +79,7 @@ namespace Curriculum.Controllers
     {
       if (LessonId != 0)
       {
-        _db.TrackLesson.Add(new TrackLesson { TrackId = track.TrackId, LessonId = LessonId });
+        _db.LessonTrack.Add(new LessonTrack { TrackId = track.TrackId, LessonId = LessonId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -88,8 +89,8 @@ namespace Curriculum.Controllers
     [HttpPost]
     public ActionResult DeleteLesson(int joinId)
     {
-      TrackLesson joinEntry = _db.TrackLesson.FirstOrDefault(entry => entry.TrackLessonId == joinId);
-      _db.TrackLesson.Remove(joinEntry);
+      LessonTrack joinEntry = _db.LessonTrack.FirstOrDefault(entry => entry.LessonTrackId == joinId);
+      _db.LessonTrack.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
