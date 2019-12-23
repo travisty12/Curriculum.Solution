@@ -1,0 +1,16 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Curriculum.Models.Lesson
+
+<h4>Add a new lesson</h4>
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Title)
+  @Html.TextBoxFor(model => model.Title)
+  @Html.LabelFor(model => model.Content)
+  @Html.TextBoxFor(model => model.Content)
+  <input type="submit" value="Add new lesson" />
+}
+<p>@Html.ActionLink("Return to lesson list", "Index")</p>
