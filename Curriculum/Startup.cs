@@ -19,10 +19,21 @@ namespace Curriculum
       Configuration = builder.Build();
     }
 
+    readonly string MyAllowSpecificOrigins = "_MyAllowSpecificOrigins";
+
     public IConfigurationRoot Configuration { get; set; }
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(opt =>
+      {
+        opt.AddPolicy(MyAllowSpecificOrigins,
+        builder =>
+        {
+          builder.WithOrigins("http://localhost:9000",
+                              "http://localhost:8080");
+        });
+      });
       services.AddMvc();
 
       services.AddEntityFrameworkMySql()
@@ -51,7 +62,7 @@ namespace Curriculum
       app.UseStaticFiles();
 
       app.UseAuthentication();
-
+      app.UseCors(MyAllowSpecificOrigins);
       app.UseMvc(routes =>
       {
         routes.MapRoute(

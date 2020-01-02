@@ -13,30 +13,34 @@
 <p>@Html.ActionLink("Create an account / Login", "Index", "Account")</p>
 
 <div id="splash">
-  @if (Model.Lessons.Any())
-  {
-    <h3>Lessons:</h3>
-    <ul>
-      @foreach (Lesson lesson in Model.Lessons)
-      {
-        <li>@Html.ActionLink($"{lesson.Title}", "Details", "Lessons", new { id = lesson.LessonId })</li>
-      }
-    </ul>
-  }
-  else {
-    <h3>No lessons have been added yet.</h3>
-  }
-  @if (Model.Tracks.Any())
-  {
-    <h3>Tracks:</h3>
-    <ul>
-      @foreach (Track track in Model.Tracks)
-      {
-        <li>@Html.ActionLink($"{track.Name}", "Details", "Tracks", new { id = track.TrackId })</li>
-      }
-    </ul>
-  }
-  else {
-    <h3>No tracks have been added yet.</h3>
-  }
+  <div id="tracks">
+    @if (Model.Tracks.Any())
+    {
+      <h3>Tracks</h3>
+      <ul>
+        @foreach (Track track in Model.Tracks)
+        {
+          <li>@Html.ActionLink($"{track.Name}", "Details", "Tracks", new { id = track.TrackId })</li>
+        }
+      </ul>
+    }
+    else {
+      <h3>No tracks have been added yet.</h3>
+    }
+  </div>
+  <div id="lessons">
+    @if (Model.Lessons.Any())
+    {
+      <h3>Lessons</h3>
+      <ul>
+        @foreach (Lesson lesson in Model.Lessons)
+        {
+          <li>@Html.ActionLink($"{lesson.Title}", "Details", "Lessons", new { id = lesson.LessonId })</li>
+        }
+      </ul>
+    }
+    else {
+      <h3>No lessons have been added yet.</h3>
+    }
+  </div>
 </div>

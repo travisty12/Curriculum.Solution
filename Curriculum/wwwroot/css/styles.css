@@ -1,6 +1,19 @@
 * {
   padding: 0px;
   margin: 0px;
+  text-align: center;
+}
+
+ul {
+  border: 1px dotted rgba(30, 30, 30, 0.3);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 15px;
+  width: calc(100% - 60px);
+}
+
+li {
+  list-style-type: none;
 }
 
 a {
@@ -84,13 +97,17 @@ a:hover {
           flex-direction: row;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin: 50px;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin: 20px;
   padding: 50px;
   border: 1px solid rgba(0, 0, 0, 0.4);
   background-color: rgba(30, 30, 30, 0.2);
   border-radius: 1vw;
+}
+
+#tracks, #lessons {
+  width: 30%;
 }
 /*# sourceMappingURL=styles.css.map */

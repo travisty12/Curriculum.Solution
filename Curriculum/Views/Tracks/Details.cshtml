@@ -20,6 +20,11 @@
       @foreach(var join in Model.Lessons)
       {
         <li>@Html.ActionLink(@join.Lesson.Title, "Details", "Lessons", new { id = @join.Lesson.LessonId })</li>
+        @using (Html.BeginForm("DeleteLesson", "Tracks"))
+        {
+          @Html.Hidden("joinId", @join.LessonTrackId)
+          <input type="submit" value="Delete" />
+        }
       }
     </ul>
   }

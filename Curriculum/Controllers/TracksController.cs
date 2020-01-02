@@ -24,7 +24,9 @@ namespace Curriculum.Controllers
 
     public ActionResult Index()
     {
-      List<Track> model = _db.Tracks.ToList();
+      var query = Request.QueryString.ToString();
+      List<Track> model = Track.GetAll(query).ToList();
+      // List<Track> model = _db.Tracks.ToList();
       return View(model);
     }
 
@@ -37,23 +39,21 @@ namespace Curriculum.Controllers
     [HttpPost]
     public ActionResult Create(Track track)
     {
-      _db.Tracks.Add(track);
-      _db.SaveChanges();
+      Track.Send("tracks", track, "post");
       return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)
     {
-      Track thisTrack = _db.Tracks
-        .Include(track => track.Lessons)
-        .ThenInclude(join => join.Lesson)
-        .FirstOrDefault(track => track.TrackId == id);
+      var query = Request.QueryString.ToString();
+      Track thisTrack = Track.GetDetails(id, query);
       return View(thisTrack);
     }
     
     public ActionResult Edit(int id)
     {
-      Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
+      var query = Request.QueryString.ToString();
+      Track thisTrack = Track.GetDetails(id, query);
       return View(thisTrack);
     }
 
@@ -61,14 +61,13 @@ namespace Curriculum.Controllers
     [HttpPost]
     public ActionResult Edit(Track track)
     {
-      _db.Entry(track).State = EntityState.Modified;
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      Track.Send($"tracks/{track.TrackId}", track, "put");
+      return RedirectToAction("Details", "Tracks", new { id = track.TrackId });
     }
 
     public ActionResult AddLesson(int id)
     {
-      Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
+      Track thisTrack = Track.GetDetails(id, "");
       ViewBag.LessonId = new SelectList(_db.Lessons, "LessonId", "Title");
       return View(thisTrack);
     }
@@ -77,27 +76,24 @@ namespace Curriculum.Controllers
     [HttpPost]
     public ActionResult AddLesson(Track track, int LessonId)
     {
-      if (LessonId != 0)
-      {
-        _db.LessonTrack.Add(new LessonTrack { TrackId = track.TrackId, LessonId = LessonId });
-      }
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      LessonTrack lessonTrack = new LessonTrack { TrackId = track.TrackId, LessonId = LessonId };
+      LessonTrack.Send("lessontracks", lessonTrack, "post");
+      return RedirectToAction("Details", "Tracks", new { id = track.TrackId });
     }
 
     [Authorize]
     [HttpPost]
     public ActionResult DeleteLesson(int joinId)
     {
-      LessonTrack joinEntry = _db.LessonTrack.FirstOrDefault(entry => entry.LessonTrackId == joinId);
-      _db.LessonTrack.Remove(joinEntry);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      LessonTrack joinEntry = LessonTrack.Get(joinId);
+      int trackId = joinEntry.TrackId;
+      LessonTrack.Send($"lessontracks/{joinId}", joinEntry, "delete");
+      return RedirectToAction("Details", "Tracks", new { id = trackId });
     }
 
     public ActionResult Delete(int id)
     {
-      Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
+      Track thisTrack = Track.GetDetails(id, "");
       return View(thisTrack);
     }
 
@@ -105,9 +101,8 @@ namespace Curriculum.Controllers
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-      Track thisTrack = _db.Tracks.FirstOrDefault(track => track.TrackId == id);
-      _db.Tracks.Remove(thisTrack);
-      _db.SaveChanges();
+      Track thisTrack = Track.GetDetails(id, "");
+      Track.Send($"tracks/{id}", thisTrack, "delete");
       return RedirectToAction("Index");
     }
   }
