@@ -26,7 +26,7 @@ class TracksController < ApplicationController
   end
 
   def create
-    @track = Track.new(Track_params)
+    @track = Track.new(track_params)
     if @track.save
       flash[:notice] = "Track added safely!"
       redirect_to tracks_path
@@ -64,7 +64,7 @@ class TracksController < ApplicationController
 
   def update
     @track = Track.find(params[:id])
-    if @track.update(Track_params)
+    if @track.update(track_params)
       flash[:notice] = "Track updated safely!"
       redirect_to tracks_path
     else
@@ -81,7 +81,7 @@ class TracksController < ApplicationController
   end
 
   private 
-    def Track_params
+    def track_params
       params.require(:track).permit(:name)
     end
 
