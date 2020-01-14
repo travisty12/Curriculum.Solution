@@ -1,0 +1,4 @@
+  [1m[35m (521.0ms)[0m  [1m[35mCREATE DATABASE "curriculum_development" ENCODING = 'unicode'[0m
+  ↳ /Users/travistoal/.gem/ruby/2.5.1/bin/rake:23
+  [1m[35m (384.2ms)[0m  [1m[35mCREATE DATABASE "curriculum_test" ENCODING = 'unicode'[0m
+  ↳ /Users/travistoal/.gem/ruby/2.5.1/bin/rake:23
