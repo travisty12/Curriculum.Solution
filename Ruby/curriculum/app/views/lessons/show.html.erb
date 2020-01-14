@@ -1,0 +1,31 @@
+<h1><%= @lesson.title %></h1>
+
+<% if @lesson.tracks.any? %>
+  <h4>Track List</h4>
+  <form>
+    <ul>
+      <% @lesson.tracks.each do |track| %>
+        <li><%= link_to track.name, track_path(track) %> -- <button type="submit" name="track_to_remove" value="<%= track.id %>">Remove</button></li>
+      <% end %>
+    </ul>
+  </form>
+<% else %>
+  <p>No tracks listed yet for this lesson.</p>
+<% end %>
+
+<form>
+  <label for="track_to_add">Add track</label>
+  <select name="track_to_add">
+    <% @tracks.each do |track| %>
+      <option value="<%= track.id %>"><%= track.name %></option>
+    <% end %>
+  </select>
+  <button type="submit">Add</button>
+</form>
+
+<p><%= link_to "Edit", edit_lesson_path(@lesson) %></p>
+<p><%= link_to "Delete", lesson_path(@lesson),
+  :data => {:confirm => "You sure?",
+  :method => "delete"} %></p>
+
+<p><%= link_to "Return to lessons", lessons_path %></p>
