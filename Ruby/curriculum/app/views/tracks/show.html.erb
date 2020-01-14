@@ -23,9 +23,11 @@
   <button type="submit">Add</button>
 </form>
 
-<p><%= link_to "Edit", edit_track_path(@track) %></p>
-<p><%= link_to "Delete", track_path(@track),
-  :data => {:confirm => "You sure?",
-  :method => "delete"} %></p>
+<div class="material_links">
+  <p><%= link_to "Edit", edit_track_path(@track) %></p>
+  <p><%= link_to "Delete", track_path(@track),
+    :data => {:confirm => "You sure?",
+    :method => "delete"} %></p>
 
-<p><%= link_to "Return to tracks", tracks_path %></p>
+  <p><%= link_to "Return to tracks", tracks_path %></p>
+</div>

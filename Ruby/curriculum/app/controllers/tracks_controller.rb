@@ -1,21 +1,21 @@
 class TracksController < ApplicationController
 
   def index
-    # if params[:sort_by]
-    #   case params[:sort_by]
-    #   when 'name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'
-    #     method = params[:sort_by].split(', ')
-    #     @tracks = Track.sort_by_method(method)
-    #   else
-    #     flash[:notice] = "Invalid sorting method"
-    #     @tracks = Track.all
-    #   end
-    # elsif params[:search]
-    #   @tracks = Track.search(params[:search])
-    #   @search = true
-    # else
+    if params[:sort_by]
+      case params[:sort_by]
+      when 'name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'
+        method = params[:sort_by].split(', ')
+        @tracks = Track.sort_by_method(method)
+      else
+        flash[:notice] = "Invalid sorting method"
+        @tracks = Track.all
+      end
+    elsif params[:search]
+      @tracks = Track.search(params[:search])
+      @search = true
+    else
       @tracks = Track.all
-    # end
+    end
     
     render :index
   end
