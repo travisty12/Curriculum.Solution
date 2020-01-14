@@ -5,12 +5,13 @@
       <% if @search %>
         <button type="submit">Return to main lessons view</button>
       <% end %>
-      <button name="sort_by" value="name, asc" type="submit">A-Z</button>
-      <button name="sort_by" value="name, desc" type="submit">Z-A</button>
+      <button name="sort_by" value="title, asc" type="submit">A-Z</button>
+      <button name="sort_by" value="title, desc" type="submit">Z-A</button>
       <button name="sort_by" value="created_at, desc" type="submit">Most Recent</button>
       <button name="sort_by" value="created_at, asc" type="submit">Oldest</button>
     </form>
   </div>
+  <%= paginate @lessons, window: 2 %>
   <ul>
     <% @lessons.each do |lesson| %>
       <li><%= link_to lesson.title, lesson_path(lesson) %></li>

@@ -11,6 +11,7 @@
       <button name="sort_by" value="created_at, asc" type="submit">Oldest</button>
     </form>
   </div>
+  <%= paginate @tracks, window: 2 %>
   <ul>
     <% @tracks.each do |track| %>
       <li><%= link_to track.name, track_path(track) %></li>

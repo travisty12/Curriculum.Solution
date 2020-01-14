@@ -1,21 +1,15 @@
 class LessonsController < ApplicationController
 
   def index
-    if params[:sort_by]
-      case params[:sort_by]
-      when 'name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'
-        method = params[:sort_by].split(', ')
-        @lessons = Lesson.sort_by_method(method)
-      else
-        flash[:notice] = "Invalid sorting method"
-        @lessons = Lesson.all
-      end
-    elsif params[:search]
-      @lessons = Lesson.search(params[:search])
-      @search = true
-    else
-      @lessons = Lesson.all
-    end
+    @lessons = Lesson
+
+    method = params[:sort_by].split(', ') if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
+    @lessons = @lessons.sort_by_method(method) if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
+    flash[:notice] = "Invalid sorting method" if (params[:sort_by] && !(['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by])))
+    @lessons = @lessons.search(params[:search]) if params[:search]
+    @search = true if params[:search]
+
+    @lessons = @lessons.limit(10).page(params[:page])
     
     render :index
   end
@@ -82,7 +76,7 @@ class LessonsController < ApplicationController
 
   private 
     def lesson_params
-      params.require(:lesson).permit(:name)
+      params.require(:lesson).permit(:title, :content)
     end
 
 end
