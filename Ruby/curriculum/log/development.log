@@ -188,3 +188,21 @@ Processing by HomeController#index as HTML
 Completed 200 OK in 136ms (Views: 130.3ms | ActiveRecord: 0.0ms)
 
 
+Started GET "/" for ::1 at 2020-01-14 09:55:14 -0800
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.2ms)
+  Rendered layouts/_header.html.erb (0.4ms)
+Completed 200 OK in 21ms (Views: 20.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/tracks" for ::1 at 2020-01-14 09:55:28 -0800
+Processing by TracksController#index as HTML
+  Rendering tracks/index.html.erb within layouts/application
+  [1m[36mTrack Exists (6.5ms)[0m  [1m[34mSELECT  1 AS one FROM "tracks" LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/views/tracks/index.html.erb:2
+  Rendered tracks/index.html.erb within layouts/application (11.9ms)
+  Rendered layouts/_header.html.erb (0.4ms)
+Completed 200 OK in 44ms (Views: 28.2ms | ActiveRecord: 9.4ms)
+
+
