@@ -7,23 +7,23 @@ CSharp/*/obj/
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+Ruby/*/.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
+Ruby/*/log/*
+Ruby/*/tmp/*
 !/log/.keep
 !/tmp/.keep
 
 # Ignore uploaded files in development
-/storage/*
+Ruby/*/storage/*
 !/storage/.keep
 
-/node_modules
-/yarn-error.log
+Ruby/*/node_modules
+Ruby/*/yarn-error.log
 
-/public/assets
+Ruby/*/public/assets
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+Ruby/*/config/master.key
