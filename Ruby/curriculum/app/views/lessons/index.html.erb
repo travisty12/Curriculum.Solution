@@ -1,0 +1,31 @@
+<h1>Lessons</h1>
+<% if @lessons.any? %>
+  <div class="sort">
+    <form>
+      <% if @search %>
+        <button type="submit">Return to main lessons view</button>
+      <% end %>
+      <button name="sort_by" value="name, asc" type="submit">A-Z</button>
+      <button name="sort_by" value="name, desc" type="submit">Z-A</button>
+      <button name="sort_by" value="created_at, desc" type="submit">Most Recent</button>
+      <button name="sort_by" value="created_at, asc" type="submit">Oldest</button>
+    </form>
+  </div>
+  <ul>
+    <% @lessons.each do |lesson| %>
+      <li><%= link_to lesson.name, lesson_path(lesson) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no lessons yet.</p>
+<% end %>
+
+<form action="/lessons">
+  <div class="form-group">
+    <label for="search">Search for lesson</label>
+    <input name="search" type="text" />
+  </div>
+  <button type="submit" >Go!</button>
+</form>
+
+<p><%= link_to "Create new lesson", new_lesson_path %></p>

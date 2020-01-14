@@ -1,0 +1,31 @@
+<h1>Tracks</h1>
+<% if @tracks.any? %>
+  <div class="sort">
+    <form>
+      <% if @search %>
+        <button type="submit">Return to main tracks view</button>
+      <% end %>
+      <button name="sort_by" value="name, asc" type="submit">A-Z</button>
+      <button name="sort_by" value="name, desc" type="submit">Z-A</button>
+      <button name="sort_by" value="created_at, desc" type="submit">Most Recent</button>
+      <button name="sort_by" value="created_at, asc" type="submit">Oldest</button>
+    </form>
+  </div>
+  <ul>
+    <% @tracks.each do |track| %>
+      <li><%= link_to track.name, track_path(track) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no tracks yet.</p>
+<% end %>
+
+<form action="/tracks">
+  <div class="form-group">
+    <label for="search">Search for track</label>
+    <input name="search" type="text" />
+  </div>
+  <button type="submit" >Go!</button>
+</form>
+
+<p><%= link_to "Create new track", new_track_path %></p>
