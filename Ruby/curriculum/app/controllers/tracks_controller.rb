@@ -1,4 +1,5 @@
 class TracksController < ApplicationController
+  before_action :authorize, only: [:create, :update, :destroy]
 
   def index
     @tracks = Track

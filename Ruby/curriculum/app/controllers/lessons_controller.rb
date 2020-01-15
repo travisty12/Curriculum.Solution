@@ -1,5 +1,6 @@
 class LessonsController < ApplicationController
-
+  before_action :authorize, only: [:create, :update, :destroy]
+  
   def index
     @lessons = Lesson
 

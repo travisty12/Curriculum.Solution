@@ -1,6 +1,10 @@
 <div class="header">
   <div class="home">
-    <h1><a href="/">home</a></h1>
+    <% if current_user %>
+      <h3><%= current_user.email %> | <%= link_to "Sign out", '/signout' %></h3>
+    <% else %>
+      <h3><%= link_to "Sign up", '/signup' %> | <%= link_to "Sign in", '/signin' %></h3>
+    <% end %>
   </div>
   <div class="title">
     <h3><a href="/">travis' dopest curriculum</a></h3>
