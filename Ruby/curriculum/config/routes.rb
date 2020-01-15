@@ -3,4 +3,10 @@ Rails.application.routes.draw do
   root to: 'home#index'
   resources :tracks
   resources :lessons
+  get '/signup' => 'users#new'
+  get '/users' => 'users#create'
+
+  get '/signin' => 'sessions#new'
+  post '/signin' => 'sessions#create'
+  get '/signout' => 'sessions#destroy'
 end
