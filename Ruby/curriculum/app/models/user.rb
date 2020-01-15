@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   attr_accessor :password
-  validates_confirmation_of :password
+  validates :password, :confirmation => true, :format => { :with => /\A(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{6,}\z/, :message => "Must have an uppercase letter, a lowercase letter, a number, and a symbol"}
   validates :email, :presence => true, :uniqueness => true
   before_save :encrypt_password
 
