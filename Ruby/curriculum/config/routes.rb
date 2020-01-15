@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :tracks
   resources :lessons
   get '/signup' => 'users#new'
-  get '/users' => 'users#create'
+  post '/users' => 'users#create'
 
   get '/signin' => 'sessions#new'
   post '/signin' => 'sessions#create'

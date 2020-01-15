@@ -12,6 +12,7 @@ class UsersController < ApplicationController
     else
       flash[:alert] = "There was an error signing up. Please try again."
       redirect_to '/signup' 
+    end
   end
 
   private
