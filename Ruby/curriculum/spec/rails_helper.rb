@@ -69,3 +69,10 @@ Shoulda::Matchers.configure do |config|
     with.library :rails 
   end
 end
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/cassettes'
+  config.hook_into :webmock
+  config.configure_rspec_metadata!
+  config.filter_sensitive_data('<api_key>') { ENV['NYT_API_KEY'] }
+end
