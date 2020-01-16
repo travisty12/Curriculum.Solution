@@ -28,3 +28,5 @@ Ruby/*/public/assets
 # Ignore master key for decrypting credentials and more.
 Ruby/*/config/master.key
 Ruby/*/coverage/*
+
+Ruby/*/.env
