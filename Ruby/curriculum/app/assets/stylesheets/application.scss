@@ -20,6 +20,15 @@
   padding: 0;
 }
 
+.profile-link {
+  display: flex;
+  align-items: center;
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
 body {
   width: 100vw;
   height: 100vh;
@@ -42,6 +51,11 @@ body {
   margin-bottom: 10px;
   .home {
     width: 25%;
+    display: flex;
+    align-items: center;
+    * {
+      margin: 5px;
+    }
   }
   .links {
     width: 25%;

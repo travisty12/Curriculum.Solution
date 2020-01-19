@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_one_attached :profile_picture
   attr_accessor :password
   validates :password, :confirmation => true, :format => { :with => /\A(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{6,}\z/, :message => "Must have an uppercase letter, a lowercase letter, a number, and a symbol"}
   validates :email, :presence => true, :uniqueness => true

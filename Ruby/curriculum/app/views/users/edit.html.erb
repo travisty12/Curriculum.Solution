@@ -1,0 +1,6 @@
+<h3>Add profile picture</h3>
+<%= form_for @user, :url => "/account/#{@user.id}" do |f| %>
+  <%= f.label :profile_picture %>
+  <%= f.file_field :profile_picture %>
+  <%= f.submit %>
+<% end %>

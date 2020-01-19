@@ -1,7 +1,11 @@
 <div class="header">
   <div class="home">
     <% if current_user %>
-      <h3><%= current_user.email %> | <%= link_to "Sign out", '/signout' %></h3>
+      <%= link_to '/account/'+current_user.id.to_s, class: "profile-link" do %>
+        <%= image_tag(current_user.profile_picture) %><h3><%= current_user.email %></h3>
+      <% end %>
+      <h3>|</h3>
+      <h3><%= link_to "Sign out", '/signout' %></h3>
     <% else %>
       <h3><%= link_to "Sign up", '/signup' %> | <%= link_to "Sign in", '/signin' %></h3>
     <% end %>

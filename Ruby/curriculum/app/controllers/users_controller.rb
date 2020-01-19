@@ -15,8 +15,30 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    if current_user != nil
+      @user = current_user
+      render :show 
+    else
+      flash[:alert] = "You must be signed in to view this."
+      redirect_to '/signin' 
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+    render :edit
+  end
+
+  def patch
+    @user = User.find(params[:id])
+    @user.profile_picture.attach(params[:user][:profile_picture])
+    binding.pry
+    redirect_to user_path
+  end
+
   private
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :profile_picture)
   end
 end
