@@ -20,8 +20,8 @@ class LessonsController < ApplicationController
   end
   
   def show
-    @lesson = Lesson.find(params[:id])
     response = {} # Initialize return hash
+    @lesson = Lesson.find(params[:id])
     @flash = ""
     if params[:track_to_add] # Add many-to-many relationship
       track = Track.find(params[:track_to_add])

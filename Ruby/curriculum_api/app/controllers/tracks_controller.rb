@@ -10,19 +10,39 @@ class TracksController < ApplicationController
 
     ## Paginate
     @tracks = @tracks.limit(10).page(params[:page])
-    
+
     json_response(@tracks)
   end
-
-  def show
-    @track = Track.find(params[:id])
-    @related_lessons = Lesson.joins(:tracks).where("tracks.id = ?", "#{@track.id}")
-    json_response({track: @track, related_lessons: @related_lessons})
-  end
-
+  
   def create
     @track = Track.create!(track_params)
     json_response(@track, :created)
+  end
+
+  def show
+    response = {} # Initialize return hash
+    @track = Track.find(params[:id])
+    @flash = ""
+    if params[:lesson_to_add] # Add many-to-many relationship
+      lesson = Lesson.find(params[:lesson_to_add])
+      if @track.lessons.include? lesson 
+        @flash = "Relationship already exists!"
+      else
+        @track.lessons << lesson
+      end
+    elsif params[:lesson_to_remove] # Remove many-to-many relationship
+      lesson = Lesson.find(params[:lesson_to_remove])
+      if @track.lessons.include? lesson 
+        @track.lessons.delete(lesson)
+      else
+        @flash = "Relationship does not exist."
+      end
+    end
+    response[:flash] = @flash # Prepare any flash notices
+    response[:track] = @track # Return track
+    response[:related_lessons] = Lesson.joins(:tracks).where("tracks.id = ?", "#{@track.id}") # Returns track's lessons
+    response[:lessons] = Lesson.all # Returns ALL lessons, for dropdown view (to add many-to-many relationship)
+    json_response(response)
   end
 
   def update
