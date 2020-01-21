@@ -9,7 +9,7 @@ class TracksController < ApplicationController
     @tracks = @tracks.search(params[:search]) if params[:search]
 
     ## Paginate
-    @tracks = @tracks.limit(10).page(params[:page])
+    @tracks = @tracks.limit(10).page(params[:page]).per(Track.count)
 
     json_response(@tracks)
   end
@@ -38,9 +38,10 @@ class TracksController < ApplicationController
         @flash = "Relationship does not exist."
       end
     end
+    @related_lessons = Lesson.joins(:tracks).where("tracks.id = ?", "#{@track.id}") # Returns track's lessons
     response[:flash] = @flash # Prepare any flash notices
     response[:track] = @track # Return track
-    response[:related_lessons] = Lesson.joins(:tracks).where("tracks.id = ?", "#{@track.id}") # Returns track's lessons
+    response[:related_lessons] = @related_lessons.limit(10).page(params[:page]).per(@related_lessons.count) # Paginates track's lessons
     response[:lessons] = Lesson.all # Returns ALL lessons, for dropdown view (to add many-to-many relationship)
     json_response(response)
   end

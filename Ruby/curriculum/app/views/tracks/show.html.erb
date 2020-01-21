@@ -1,10 +1,11 @@
 <h1><%= @track.name %></h1>
 
-<% if @track.lessons.any? %>
+<% if @related_lessons.any? %>
   <h4>lesson List</h4>
+  <%= paginate @related_lessons, window: 2 %>
   <form>
     <ul>
-      <% @track.lessons.each do |lesson| %>
+      <% @related_lessons.each do |lesson| %>
         <li><%= link_to lesson.title, lesson_path(lesson) %> -- <button type="submit" name="lesson_to_remove" value="<%= lesson.id %>">Remove</button></li>
       <% end %>
     </ul>

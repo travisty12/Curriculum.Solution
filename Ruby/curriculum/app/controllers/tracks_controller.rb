@@ -52,6 +52,7 @@ class TracksController < ApplicationController
     else
       @track = Track.new(response["track"])
       @related_lessons = response["related_lessons"].map { |lesson| Lesson.new(lesson) }
+      @related_lessons = Kaminari.paginate_array(@related_lessons).page(params[:page])
       @lessons = response["lessons"].map { |lesson| Lesson.new(lesson) }
       flash[:notice] = response["flash"]
       render :show

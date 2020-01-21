@@ -28,13 +28,15 @@
     height: 30px;
   }
 }
+html, body {
+  min-height: 100%;
+}
 
 body {
   width: 100vw;
-  height: 100vh;
-  background-image: -webkit-linear-gradient(to bottom right, rgba(27, 67, 75, 0.5), rgba(39, 84, 76, 0.5));
-  background-image: -moz-linear-gradient(to bottom right, rgba(27, 67, 75, 0.5), rgba(39, 84, 76, 0.5));
-  background-image: linear-gradient(to bottom right, rgba(27, 67, 75, 0.5), rgba(39, 84, 76, 0.5));
+  background-image: -webkit-linear-gradient(to bottom right, rgba(127, 67, 175, 0.5), rgba(39, 84, 76, 0.5));
+  background-image: -moz-linear-gradient(to bottom right, rgba(127, 67, 175, 0.5), rgba(39, 84, 76, 0.5));
+  background-image: linear-gradient(to bottom right, rgba(127, 67, 175, 0.5), rgba(39, 84, 76, 0.5));
   background-repeat: no-repeat;
   display: flex;
   flex-direction: column;

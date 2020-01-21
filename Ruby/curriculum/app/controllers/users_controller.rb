@@ -33,7 +33,6 @@ class UsersController < ApplicationController
   def patch
     @user = User.find(params[:id])
     @user.profile_picture.attach(params[:user][:profile_picture])
-    binding.pry
     redirect_to user_path
   end
 

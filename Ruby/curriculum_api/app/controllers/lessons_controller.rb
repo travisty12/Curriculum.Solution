@@ -9,7 +9,7 @@ class LessonsController < ApplicationController
     @lessons = @lessons.search(params[:search]) if params[:search]
 
     ## Paginate
-    @lessons = @lessons.limit(10).page(params[:page])
+    @lessons = @lessons.limit(10).page(params[:page]).per(Lesson.count)
 
     json_response(@lessons)
   end
