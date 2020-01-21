@@ -7,7 +7,8 @@ class TracksController < ApplicationController
 
   def show
     @track = Track.find(params[:id])
-    json_response(@track)
+    @related_lessons = Lesson.joins(:tracks).where("tracks.id = ?", "#{@track.id}")
+    json_response({track: @track, related_lessons: @related_lessons})
   end
 
   def create

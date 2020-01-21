@@ -2,15 +2,15 @@ class LessonsController < ApplicationController
   before_action :authorize, only: [:create, :update, :destroy]
   
   def index
-    @lessons = Lesson
-
-    method = params[:sort_by].split(', ') if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
-    @lessons = @lessons.sort_by_method(method) if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
+    p Lesson.limit(10).page(1)
+    endpoint = '/lessons?'
+    endpoint += '&sort_by=' + params[:sort_by] if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
     flash[:notice] = "Invalid sorting method" if (params[:sort_by] && !(['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by])))
-    @lessons = @lessons.search(params[:search]) if params[:search]
+    endpoint += '&search=' + params[:search] if params[:search]
+    # endpoint += '&page=' + params[:page] if params[:page]
     @search = true if params[:search]
-
-    @lessons = @lessons.limit(10).page(params[:page])
+    @lessons = CurriculumResource.fetch('get', endpoint).map { |response| Lesson.new(response) }
+    @lessons = Kaminari.paginate_array(@lessons).page(params[:page])
     
     render :index
   end
@@ -37,23 +37,15 @@ class LessonsController < ApplicationController
   end
 
   def show
-    @lesson = Lesson.find(params[:id])
-    if params[:track_to_add]
-      track = Track.find(params[:track_to_add])
-      if @lesson.tracks.include? track
-        flash[:notice] = "Relationship already exists!"
-      else
-        @lesson.tracks << track
-      end
-    elsif params[:track_to_remove]
-      track = Track.find(params[:track_to_remove])
-      if @lesson.tracks.include? track
-        @lesson.tracks.delete(track)
-      else
-        flash[:notice] = "Relationship does not exist."
-      end
-    end
-    @tracks = Track.all
+    endpoint = '/lessons/' + params[:id] + '?'
+    endpoint += '&track_to_add=' + params[:track_to_add] if params[:track_to_add]
+    endpoint += '&track_to_remove=' + params[:track_to_remove] if params[:track_to_remove]
+
+    response = CurriculumResource.fetch('get', endpoint)
+    p response["related_tracks"]
+    @lesson = Lesson.new(response["lesson"])
+    @related_tracks = response["related_tracks"].map { |track| Track.new(track) }
+    @tracks = response["tracks"].map { |track| Track.new(track) }
     render :show
   end
 
