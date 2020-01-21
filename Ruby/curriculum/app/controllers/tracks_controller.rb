@@ -42,24 +42,20 @@ class TracksController < ApplicationController
   end
 
   def show
-    @track = Track.find(params[:id])
-    if params[:lesson_to_add]
-      lesson = Lesson.find(params[:lesson_to_add])
-      if @track.lessons.include? lesson
-        flash[:notice] = "Relationship already exists!"
-      else
-        @track.lessons << lesson
-      end
-    elsif params[:lesson_to_remove]
-      lesson = Lesson.find(params[:lesson_to_remove])
-      if @track.lessons.include? lesson
-        @track.lessons.delete(lesson)
-      else
-        flash[:notice] = "Relationship does not exist."
-      end
+    endpoint = '/tracks/' + params[:id] + '?'
+    endpoint += '&lesson_to_add=' + params[:lesson_to_add] if params[:lesson_to_add]
+    endpoint += '&lesson_to_remove=' + params[:lesson_to_remove] if params[:lesson_to_remove]
+
+    response = CurriculumResource.fetch('get', endpoint)
+    if response.code == 404
+      render :not_found
+    else
+      @track = Track.new(response["track"])
+      @related_lessons = response["related_lessons"].map { |lesson| Lesson.new(lesson) }
+      @lessons = response["lessons"].map { |lesson| Lesson.new(lesson) }
+      flash[:notice] = response["flash"]
+      render :show
     end
-    @lessons = Lesson.all
-    render :show
   end
 
   def update
