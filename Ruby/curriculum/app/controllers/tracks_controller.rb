@@ -59,8 +59,8 @@ class TracksController < ApplicationController
   end
 
   def update
-    @track = Track.find(params[:id])
-    if @track.update(track_params)
+    response = CurriculumResource.fetch('put', '/tracks/' + params[:id] + '?', track_params)
+    if response.code == 200
       flash[:notice] = "Track updated safely!"
       redirect_to tracks_path
     else
@@ -69,10 +69,13 @@ class TracksController < ApplicationController
     end
   end
 
-  def destroy
-    @track = Track.find(params[:id])
-    @track.destroy
-    flash[:notice] = "Track deleted safely!"
+  def destroy    
+    response = CurriculumResource.fetch('put', '/tracks/' + params[:id] + '?', track_params)
+    if response.code == 200
+      flash[:notice] = "Track deleted safely!"
+    else
+      flash[:notice] = "Track could not be deleted."
+    end
     redirect_to tracks_path
   end
 
