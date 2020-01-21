@@ -1,6 +1,15 @@
 class TracksController < ApplicationController
 
   def index
+    @tracks = Track # Initialize model
+
+    ## Provide filtering options
+    method = params[:sort_by].split(', ') if (params[:sort_by] && ['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
+    @tracks = @tracks.sort_by_method(method) if (params[:sort_by] && ['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
+    @tracks = @tracks.search(params[:search]) if params[:search]
+
+    ## Paginate
+    @tracks = @tracks.limit(10).page(params[:page])
     
     json_response(@tracks)
   end
