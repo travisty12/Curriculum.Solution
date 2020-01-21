@@ -2,18 +2,22 @@ class TracksController < ApplicationController
   before_action :authorize, only: [:create, :update, :destroy]
 
   def index
-    @tracks = Track
-
-    method = params[:sort_by].split(', ') if (params[:sort_by] && ['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
-    @tracks = @tracks.sort_by_method(method) if (params[:sort_by] && ['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
-
+    endpoint = '/tracks?'
+    endpoint += '&sort_by=' + params[:sort_by] if (params[:sort_by] && ['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
     flash[:notice] = "Invalid sorting method" if (params[:sort_by] && !(['name, asc', 'name, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by])))
-    @tracks = @tracks.search(params[:search]) if params[:search]
+    endpoint += '&search=' + params[:search] if params[:search]
+
     @search = true if params[:search]
 
-    @tracks = @tracks.limit(10).page(params[:page])
-    
-    render :index
+    response = CurriculumResource.fetch('get', endpoint)
+
+    if (response.code == 404)
+      render :not_found
+    else
+      @tracks = response.map { |response| Track.new(response) }
+      @tracks = Kaminari.paginate_array(@tracks).page(params[:page])
+      render :index
+    end
   end
 
   def new
@@ -22,8 +26,8 @@ class TracksController < ApplicationController
   end
 
   def create
-    @track = Track.new(track_params)
-    if @track.save
+    response = CurriculumResource.fetch('post', '/tracks?', track_params)
+    if response.code == 201
       flash[:notice] = "Track added safely!"
       redirect_to tracks_path
     else
@@ -33,7 +37,7 @@ class TracksController < ApplicationController
   end
 
   def edit
-    @track = Track.find(params[:id])
+    @track = CurriculumResource.fetch('get', '/tracks/' + params[:id])
     render :edit
   end
 
