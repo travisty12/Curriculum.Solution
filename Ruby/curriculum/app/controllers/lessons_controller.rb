@@ -2,17 +2,22 @@ class LessonsController < ApplicationController
   before_action :authorize, only: [:create, :update, :destroy]
   
   def index
-    p Lesson.limit(10).page(1)
     endpoint = '/lessons?'
     endpoint += '&sort_by=' + params[:sort_by] if (params[:sort_by] && ['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by]))
     flash[:notice] = "Invalid sorting method" if (params[:sort_by] && !(['title, asc', 'title, desc', 'created_at, asc', 'created_at, desc'].include?(params[:sort_by])))
     endpoint += '&search=' + params[:search] if params[:search]
-    # endpoint += '&page=' + params[:page] if params[:page]
+
     @search = true if params[:search]
-    @lessons = CurriculumResource.fetch('get', endpoint).map { |response| Lesson.new(response) }
-    @lessons = Kaminari.paginate_array(@lessons).page(params[:page])
-    
-    render :index
+
+    response = CurriculumResource.fetch('get', endpoint)
+
+    if (response.code == 404)
+      render :not_found
+    else
+      @lessons = response.map { |response| Lesson.new(response) }
+      @lessons = Kaminari.paginate_array(@lessons).page(params[:page])
+      render :index
+    end
   end
 
   def new
@@ -21,8 +26,8 @@ class LessonsController < ApplicationController
   end
 
   def create
-    @lesson = Lesson.new(lesson_params)
-    if @lesson.save
+    response = CurriculumResource.fetch('post', '/lessons?', lesson_params)
+    if response.code == 201
       flash[:notice] = "Lesson added safely!"
       redirect_to lessons_path
     else
@@ -32,7 +37,7 @@ class LessonsController < ApplicationController
   end
 
   def edit
-    @lesson = Lesson.find(params[:id])
+    @lesson = CurriculumResource.fetch('get', '/lessons/' + params[:id])
     render :edit
   end
 
@@ -42,16 +47,20 @@ class LessonsController < ApplicationController
     endpoint += '&track_to_remove=' + params[:track_to_remove] if params[:track_to_remove]
 
     response = CurriculumResource.fetch('get', endpoint)
-    p response["related_tracks"]
-    @lesson = Lesson.new(response["lesson"])
-    @related_tracks = response["related_tracks"].map { |track| Track.new(track) }
-    @tracks = response["tracks"].map { |track| Track.new(track) }
-    render :show
+    if response.code == 404
+      render :not_found
+    else
+      @lesson = Lesson.new(response["lesson"])
+      @related_tracks = response["related_tracks"].map { |track| Track.new(track) }
+      @tracks = response["tracks"].map { |track| Track.new(track) }
+      flash[:notice] = response["flash"]
+      render :show
+    end
   end
 
   def update
-    @lesson = Lesson.find(params[:id])
-    if @lesson.update(lesson_params)
+    response = CurriculumResource.fetch('put', '/lessons/' + params[:id] + '?', lesson_params)
+    if response.code == 200
       flash[:notice] = "Lesson updated safely!"
       redirect_to lessons_path
     else
@@ -61,9 +70,12 @@ class LessonsController < ApplicationController
   end
 
   def destroy
-    @lesson = Lesson.find(params[:id])
-    @lesson.destroy
-    flash[:notice] = "Lesson deleted safely!"
+    response = CurriculumResource.fetch('delete', '/lessons/' + params[:id])
+    if response.code == 200
+      flash[:notice] = "Lesson deleted safely!"
+    else
+      flash[:notice] = "Lesson could not be deleted."
+    end
     redirect_to lessons_path
   end
 

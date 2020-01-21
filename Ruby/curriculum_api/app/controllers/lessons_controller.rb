@@ -12,13 +12,20 @@ class LessonsController < ApplicationController
 
     json_response(@lessons)
   end
-
+  
+  def create
+    @lesson = Lesson.create!(lesson_params)
+    json_response(@lesson, :created)
+  end
+  
   def show
     @lesson = Lesson.find(params[:id])
+    response = {}
+    @flash = ""
     if params[:track_to_add]
       track = Track.find(params[:track_to_add])
       if @lesson.tracks.include? track
-        # flash[:notice] = "Relationship already exists!"
+        @flash = "Relationship already exists!"
       else
         @lesson.tracks << track
       end
@@ -27,17 +34,14 @@ class LessonsController < ApplicationController
       if @lesson.tracks.include? track
         @lesson.tracks.delete(track)
       else
-        # flash[:notice] = "Relationship does not exist."
+        @flash = "Relationship does not exist."
       end
     end
-    @related_tracks = Track.joins(:lessons).where("lessons.id = ?", "#{@lesson.id}")
-    @tracks = Track.all
-    json_response({lesson: @lesson, related_tracks: @related_tracks, tracks: @tracks})
-  end
-
-  def create
-    @lesson = Lesson.create!(lesson_params)
-    json_response(@lesson, :created)
+    response[:flash] = @flash
+    response[:lesson] = @lesson
+    response[:related_tracks] = Track.joins(:lessons).where("lessons.id = ?", "#{@lesson.id}")
+    response[:tracks] = Track.all
+    json_response(response)
   end
 
   def update
