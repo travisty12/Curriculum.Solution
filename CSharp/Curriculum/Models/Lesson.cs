@@ -14,7 +14,7 @@ namespace Curriculum.Models
     public int LessonId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
-    public virtual ApplicationUser User { get; set; }
+    // public virtual ApplicationUser User { get; set; }
 
     public virtual ICollection<LessonTrack> Tracks { get; }
 

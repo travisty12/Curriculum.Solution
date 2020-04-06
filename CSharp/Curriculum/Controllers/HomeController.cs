@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Curriculum.Models;
+using System.Collections.Generic;
 using Curriculum.ViewModels;
 
 namespace Curriculum.Controllers
@@ -13,7 +14,10 @@ namespace Curriculum.Controllers
     [HttpGet("/")]
     public ActionResult Index()
     {
-      var model = new LessonsAndTracks {Lessons = Lesson.GetAll(""), Tracks = Track.GetAll("")};
+      var model = new Dictionary<string,object>() {
+        {"Lessons", Lesson.GetAll("")},
+        {"Tracks", Track.GetAll("")}
+      };
       return View(model);
     }
 

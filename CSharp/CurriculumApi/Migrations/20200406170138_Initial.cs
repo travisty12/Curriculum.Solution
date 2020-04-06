@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Curriculum.Migrations
+namespace CurriculumApi.Migrations
 {
     public partial class Initial : Migration
     {
@@ -45,6 +45,33 @@ namespace Curriculum.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lessons",
+                columns: table => new
+                {
+                    LessonId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lessons", x => x.LessonId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tracks",
+                columns: table => new
+                {
+                    TrackId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tracks", x => x.TrackId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,55 +181,13 @@ namespace Curriculum.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lessons",
-                columns: table => new
-                {
-                    LessonId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lessons", x => x.LessonId);
-                    table.ForeignKey(
-                        name: "FK_Lessons_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tracks",
-                columns: table => new
-                {
-                    TrackId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tracks", x => x.TrackId);
-                    table.ForeignKey(
-                        name: "FK_Tracks_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LessonTrack",
                 columns: table => new
                 {
                     LessonTrackId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     LessonId = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false),
-                    TrackId = table.Column<int>(nullable: true)
+                    TrackId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +203,7 @@ namespace Curriculum.Migrations
                         column: x => x.TrackId,
                         principalTable: "Tracks",
                         principalColumn: "TrackId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -259,11 +244,6 @@ namespace Curriculum.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lessons_UserId",
-                table: "Lessons",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LessonTrack_LessonId",
                 table: "LessonTrack",
                 column: "LessonId");
@@ -272,11 +252,6 @@ namespace Curriculum.Migrations
                 name: "IX_LessonTrack_TrackId",
                 table: "LessonTrack",
                 column: "TrackId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tracks_UserId",
-                table: "Tracks",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -303,13 +278,13 @@ namespace Curriculum.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Lessons");
 
             migrationBuilder.DropTable(
                 name: "Tracks");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

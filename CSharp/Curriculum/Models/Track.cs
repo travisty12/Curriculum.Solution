@@ -13,7 +13,7 @@ namespace Curriculum.Models
 
     public int TrackId { get; set; }
     public string Name { get; set; }
-    public virtual ApplicationUser User { get; set; }
+    // public virtual ApplicationUser User { get; set; }
 
     public virtual ICollection<LessonTrack> Lessons { get; }
 

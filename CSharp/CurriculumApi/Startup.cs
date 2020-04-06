@@ -24,7 +24,8 @@ namespace CurriculumApi
       services.AddDbContext<CurriculumApiContext>(opt =>
         opt.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-        .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);;
+        .AddRazorOptions(options => options.AllowRecompilingViewsOnFileChange = true)
+        .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
       services.AddApiVersioning(o =>
       {
         o.ReportApiVersions = true;

@@ -14,14 +14,14 @@ namespace Curriculum.Controllers
 {
   public class LessonsController : Controller
   {
-    private readonly CurriculumContext _db;
-    private readonly UserManager<ApplicationUser> _userManager;
+    // private readonly CurriculumContext _db;
+    // private readonly UserManager<ApplicationUser> _userManager;
 
-    public LessonsController(UserManager<ApplicationUser> userManager, CurriculumContext db)
-    {
-      _userManager = userManager;
-      _db = db;
-    }
+    // public LessonsController(UserManager<ApplicationUser> userManager, CurriculumContext db)
+    // {
+    //   _userManager = userManager;
+    //   _db = db;
+    // }
 
     public ActionResult Index()
     {
@@ -35,7 +35,7 @@ namespace Curriculum.Controllers
       return View();
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost]
     public ActionResult Create(Lesson lesson)
     {
@@ -57,7 +57,7 @@ namespace Curriculum.Controllers
       return View(thisLesson);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost]
     public ActionResult Edit(Lesson lesson)
     {
@@ -68,11 +68,12 @@ namespace Curriculum.Controllers
     public ActionResult AddTrack(int id)
     {
       Lesson thisLesson = Lesson.GetDetails(id, "");
-      ViewBag.TrackId = new SelectList(_db.Tracks, "TrackId", "Name");
+      List<Track> tracks = Track.GetAll("").ToList();
+      ViewBag.TrackId = new SelectList(tracks, "TrackId", "Name");
       return View(thisLesson);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost]
     public ActionResult AddTrack(Lesson lesson, int TrackId)
     {
@@ -81,7 +82,7 @@ namespace Curriculum.Controllers
       return RedirectToAction("Details", "Lessons", new {id = lesson.LessonId});
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost]
     public ActionResult DeleteTrack(int joinId)
     {
@@ -98,7 +99,7 @@ namespace Curriculum.Controllers
       return View(thisLesson);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
